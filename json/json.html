@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show/Hide Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="toggleButton" onclick="hide()">Show Table</button>
+
+    <table id="userTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        function hide() {
+            const table = document.getElementById('userTable');
+            const button = document.getElementById('toggleButton');
+
+            if (table.style.display === 'none') {
+                table.style.display = 'table';
+                button.textContent = 'Hide Table';
+            } else {
+                table.style.display = 'none';
+                button.textContent = 'Show Table';
+            }
+        }
+
+        fetch('message.json')
+            .then(response => response.json())
+            .then(data => {
+                const users = data.users;
+
+                const tableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+
+                users.forEach(user => {
+                    const row = tableBody.insertRow();
+                    const firstName = row.insertCell(0);
+                    const email = row.insertCell(1);
+                    const phone = row.insertCell(2);
+
+                    firstName.textContent = user.firstName;
+                    email.textContent = user.email;
+                    phone.textContent = user.phone;
+
+                });
+            })
+    </script>
+</body>
+</html>
